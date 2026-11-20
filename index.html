@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Document</title>
+<style>
+  * { outline: none; }
+  body { margin: 0; width: 1200px; font-family: Georgia, serif; background: #fff; color: #bbb; }
+  .top { background: #3b2a20; height: 70px; display: flex; align-items: center; padding: 0 30px; }
+  .logo { color: #f3e9dc; font-size: 28px; margin-right: 60px; }
+  .menu div { display: inline-block; color: #f3e9dc; margin-right: 30px; cursor: pointer; font-size: 18px; }
+  .banner { background: #e8d9c4; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #3b2a20; }
+  .wrap { padding: 30px; }
+  h2 { color: #aaa; font-size: 30px; }
+  p { font-size: 18px; line-height: 1.5; }
+  .cards { display: flex; gap: 20px; }
+  .card { width: 270px; border: 1px solid #eee; padding: 10px; }
+  .card img { width: 250px; height: 150px; display: block; }
+  .precio { font-size: 11px; color: #ccc; }
+  .btn { font-size: 10px; padding: 2px 4px; margin: 0 1px; border: 1px solid #aaa; background: #fafafa; color: #999; cursor: pointer; }
+  .form input { display: block; margin: 10px 0; padding: 8px; width: 300px; border: 1px solid #ccc; font-size: 16px; }
+  .form input.mal { border: 2px solid red; }
+  .enviar { padding: 4px 8px; font-size: 11px; background: #3b2a20; color: #fff; border: 0; cursor: pointer; }
+  .pie { background: #3b2a20; color: #7a6a5c; padding: 20px 30px; font-size: 12px; margin-top: 40px; }
+  #popup { position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,.75); z-index: 10; display: flex; align-items: center; justify-content: center; }
+  #popup .caja { background: #fff; width: 520px; height: 300px; padding: 30px; position: relative; font-size: 26px; color: #3b2a20; }
+  #popup .x { position: absolute; right: 6px; top: 4px; font-size: 8px; color: #ddd; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div id="popup">
+  <div class="caja">
+    <span class="x" onclick="document.getElementById('popup').style.display='none'">x</span>
+    ¡Suscríbete y consigue un 10% en tu primer café!
+    <p style="font-size:14px;color:#999">Solo hoy. Oferta limitada.</p>
+  </div>
+</div>
+
+<div class="top">
+  <div class="logo">Café Luna</div>
+  <div class="menu">
+    <div onclick="ir('inicio')">Inicio</div>
+    <div onclick="ir('carta')">Carta</div>
+    <div onclick="ir('reservas')">Reservas</div>
+    <div onclick="ir('contacto')">Contacto</div>
+  </div>
+</div>
+
+<div class="banner" id="banner">Café de especialidad recién tostado</div>
+
+<div class="wrap">
+  <h2 id="inicio">Bienvenido a Café Luna</h2>
+  <p>Somos una cafetería de barrio con más de diez años de historia. Tostamos nuestro propio café cada mañana y preparamos tartas caseras todos los días de la semana. Haz clic <a href="#carta">aquí</a> para ver la carta.</p>
+  <p>Si prefieres reservar mesa para un grupo, haz clic <a href="#reservas">aquí</a>. Para cualquier otra duda, haz clic <a href="#contacto">aquí</a>.</p>
+
+  <h2 id="carta">Nuestra carta</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='150'><rect width='250' height='150' fill='%23c8a27a'/><circle cx='125' cy='75' r='38' fill='%233b2a20'/></svg>">
+      <p>Café con leche</p>
+      <p class="precio">2,20 € · IVA incluido · Máximo 2 por persona</p>
+      <span class="btn" onclick="alert('Añadido')">−</span><span class="btn" onclick="alert('Añadido')">+</span><span class="btn" onclick="alert('Añadido')">Añadir</span>
+    </div>
+    <div class="card">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='150'><rect width='250' height='150' fill='%23d9b99b'/><rect x='80' y='40' width='90' height='70' fill='%238a5a3c'/></svg>">
+      <p>Tarta de zanahoria</p>
+      <p class="precio">3,80 € · IVA incluido · Hasta agotar existencias</p>
+      <span class="btn" onclick="alert('Añadido')">−</span><span class="btn" onclick="alert('Añadido')">+</span><span class="btn" onclick="alert('Añadido')">Añadir</span>
+    </div>
+    <div class="card">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='150'><rect width='250' height='150' fill='%23b88f6a'/><polygon points='125,30 175,120 75,120' fill='%23f3e9dc'/></svg>">
+      <p>Croissant de mantequilla</p>
+      <p class="precio">1,90 € · IVA incluido · Horneado cada mañana</p>
+      <span class="btn" onclick="alert('Añadido')">−</span><span class="btn" onclick="alert('Añadido')">+</span><span class="btn" onclick="alert('Añadido')">Añadir</span>
+    </div>
+  </div>
+
+  <h2 id="reservas">Reserva tu mesa</h2>
+  <div class="form">
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="text" id="correo" placeholder="Correo">
+    <input type="text" id="personas" placeholder="Personas">
+    <button class="enviar" onclick="enviar()">Enviar</button>
+  </div>
+
+  <h2 id="contacto">Contacto</h2>
+  <p>Calle de la Luna, 12 · Abierto todos los días de 8:00 a 20:00. Haz clic <a href="#inicio">aquí</a> para volver arriba.</p>
+</div>
+
+<div class="pie">© Café Luna · Política de privacidad · Aviso legal · Cookies</div>
+
+<script>
+  var frases = [
+    'Café de especialidad recién tostado',
+    'Tartas caseras todos los días',
+    'Reserva tu mesa para el fin de semana',
+    'Trae a tus amigos y llévate un croissant'
+  ];
+  var n = 0;
+  setInterval(function () {
+    n = (n + 1) % frases.length;
+    document.getElementById('banner').textContent = frases[n];
+  }, 2000);
+
+  function ir(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function enviar() {
+    var ids = ['nombre', 'correo', 'personas'];
+    ids.forEach(function (id) {
+      var campo = document.getElementById(id);
+      if (campo.value.trim() === '') {
+        campo.className = 'mal';
+      } else {
+        campo.className = '';
+      }
+    });
+  }
+</script>
+</body>
+</html>
