@@ -2,32 +2,116 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Document</title>
 <style>
-  * { outline: none; }
+  * { outline: none; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body { margin: 0; width: 1200px; font-family: Georgia, serif; background: #fff; color: #bbb; }
-  .top { background: #3b2a20; height: 70px; display: flex; align-items: center; padding: 0 30px; }
+
+  /* ---------- Cabecera ---------- */
+  .top { background: #3b2a20; height: 70px; display: flex; align-items: center; padding: 0 30px; position: relative; z-index: 5; }
   .logo { color: #f3e9dc; font-size: 28px; margin-right: 60px; }
   .menu div { display: inline-block; color: #f3e9dc; margin-right: 30px; cursor: pointer; font-size: 18px; }
-  .banner { background: #e8d9c4; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #3b2a20; }
+  .iconos { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+  .ico { width: 22px; height: 22px; cursor: pointer; position: relative; }
+  .ico svg { width: 100%; height: 100%; display: block; }
+  .contador { position: absolute; top: -6px; right: -8px; background: #c8a27a; color: #3b2a20; font-size: 9px; border-radius: 8px; padding: 0 4px; font-family: sans-serif; }
+  .hamburguesa { display: none; }
+
+  /* Menú móvil a pantalla completa */
+  .panel { display: none; position: fixed; inset: 0; background: #3b2a20; z-index: 20; padding: 80px 30px; }
+  .panel div { color: #f3e9dc; font-size: 26px; margin-bottom: 26px; cursor: pointer; }
+  .panel .cerrar-panel { position: absolute; top: 14px; right: 14px; font-size: 10px; color: #6b5646; margin: 0; }
+
+  .banner { background: #e8d9c4; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #3b2a20; text-align: center; padding: 0 20px; }
   .wrap { padding: 30px; }
   h2 { color: #aaa; font-size: 30px; }
   p { font-size: 18px; line-height: 1.5; }
+
+  /* ---------- Carta ---------- */
+  .desliza { display: none; font-size: 11px; color: #ccc; margin: 0 0 6px; }
   .cards { display: flex; gap: 20px; }
-  .card { width: 270px; border: 1px solid #eee; padding: 10px; }
+  .card { width: 270px; border: 1px solid #eee; padding: 10px; flex: none; }
   .card img { width: 250px; height: 150px; display: block; }
-  .precio { font-size: 11px; color: #ccc; }
+  .precio { font-size: 11px; color: #ccc; position: relative; display: inline-block; }
+  .precio .info { display: none; position: absolute; left: 0; top: 18px; width: 220px; background: #3b2a20; color: #e8d9c4; padding: 8px; font-size: 11px; z-index: 3; }
+  .precio:hover .info { display: block; }
   .btn { font-size: 10px; padding: 2px 4px; margin: 0 1px; border: 1px solid #aaa; background: #fafafa; color: #999; cursor: pointer; }
-  .form input { display: block; margin: 10px 0; padding: 8px; width: 300px; border: 1px solid #ccc; font-size: 16px; }
-  .form input.mal { border: 2px solid red; }
+  .fav { display: inline-block; width: 14px; height: 14px; vertical-align: middle; margin-left: 4px; cursor: pointer; }
+
+  /* ---------- Reservas ---------- */
+  .form input, .form select { display: block; margin: 10px 0; padding: 8px; width: 300px; border: 1px solid #ccc; font-size: 16px; color: #bbb; background: #fff; }
+  .form .fila { display: flex; gap: 4px; }
+  .form .fila select { width: 96px; font-size: 12px; padding: 4px; }
+  .form input.mal, .form select.mal { border: 2px solid red; }
   .enviar { padding: 4px 8px; font-size: 11px; background: #3b2a20; color: #fff; border: 0; cursor: pointer; }
+  .ok { display: none; color: #9bc49b; font-size: 12px; }
+
   .pie { background: #3b2a20; color: #7a6a5c; padding: 20px 30px; font-size: 12px; margin-top: 40px; }
-  #popup { position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,.75); z-index: 10; display: flex; align-items: center; justify-content: center; }
+  .pie span { margin-right: 4px; cursor: pointer; }
+
+  /* ---------- Pop-up ---------- */
+  #popup { position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,.75); z-index: 30; display: flex; align-items: center; justify-content: center; }
   #popup .caja { background: #fff; width: 520px; height: 300px; padding: 30px; position: relative; font-size: 26px; color: #3b2a20; }
   #popup .x { position: absolute; right: 6px; top: 4px; font-size: 8px; color: #ddd; cursor: pointer; }
+
+  /* ---------- Cookies ---------- */
+  #cookies { position: fixed; left: 0; right: 0; bottom: 0; background: #f3e9dc; color: #9a8a7c; padding: 14px 30px; font-size: 12px; z-index: 25; display: flex; align-items: center; gap: 14px; }
+  #cookies .aceptar { background: #3b2a20; color: #fff; padding: 10px 26px; font-size: 14px; cursor: pointer; }
+  #cookies .rechazar { color: #d5c8bb; font-size: 9px; cursor: pointer; }
+
+  /* ---------- Barra fija de móvil ---------- */
+  .barra-pedir { display: none; }
+
+  /* ---------- Bloqueo de orientación ---------- */
+  #gira { display: none; }
+
+  /* =================================================
+     MÓVIL
+     ================================================= */
+  @media (max-width: 700px) {
+    body { width: auto; font-size: 13px; overflow-x: hidden; }
+    .top { height: 56px; padding: 0 14px; position: sticky; top: 0; }
+    .logo { font-size: 22px; margin-right: 0; }
+    .menu { display: none; }
+    .iconos { gap: 4px; }
+    .ico { width: 18px; height: 18px; }
+    .hamburguesa { display: block; }
+
+    .banner { height: 46vh; font-size: 26px; }
+    .wrap { padding: 16px; }
+    h2 { font-size: 22px; }
+    p { font-size: 12px; }
+
+    .desliza { display: block; }
+    .cards { overflow-x: scroll; scroll-snap-type: x mandatory; scrollbar-width: none; gap: 12px; }
+    .cards::-webkit-scrollbar { display: none; }
+    .card { width: 82vw; scroll-snap-align: start; }
+    .card img { width: 100%; height: auto; }
+    .btn { font-size: 9px; padding: 1px 3px; }
+
+    .form input, .form select { width: 100%; font-size: 13px; }
+    .form .fila select { width: 33%; }
+
+    .pie { padding-bottom: 80px; font-size: 10px; }
+
+    #popup .caja { width: 92vw; height: 70vh; font-size: 22px; }
+
+    #cookies { bottom: 52px; flex-direction: column; align-items: stretch; text-align: left; padding: 14px; }
+    #cookies .aceptar { text-align: center; }
+    #cookies .rechazar { align-self: flex-end; }
+
+    .barra-pedir { display: flex; position: fixed; left: 0; right: 0; bottom: 0; height: 52px; background: #c8a27a; color: #3b2a20; align-items: center; justify-content: center; font-size: 15px; z-index: 15; cursor: pointer; }
+  }
+
+  @media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+    #gira { display: flex; position: fixed; inset: 0; background: #3b2a20; color: #f3e9dc; z-index: 99; align-items: center; justify-content: center; font-size: 22px; text-align: center; padding: 30px; }
+  }
 </style>
 </head>
 <body>
+
+<div id="gira">Gira el móvil para ver Café Luna</div>
 
 <div id="popup">
   <div class="caja">
@@ -37,6 +121,14 @@
   </div>
 </div>
 
+<div class="panel" id="panel">
+  <div class="cerrar-panel" onclick="panel(false)">cerrar</div>
+  <div onclick="irMovil('inicio')">Inicio</div>
+  <div onclick="irMovil('carta')">Carta</div>
+  <div onclick="irMovil('reservas')">Reservas</div>
+  <div onclick="irMovil('contacto')">Contacto</div>
+</div>
+
 <div class="top">
   <div class="logo">Café Luna</div>
   <div class="menu">
@@ -44,6 +136,18 @@
     <div onclick="ir('carta')">Carta</div>
     <div onclick="ir('reservas')">Reservas</div>
     <div onclick="ir('contacto')">Contacto</div>
+  </div>
+  <div class="iconos">
+    <div class="ico" onclick="alert('Buscar')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f3e9dc" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+    </div>
+    <div class="ico" onclick="alert('Tu pedido')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f3e9dc" stroke-width="2"><path d="M3 4h2l2 12h11l2-8H6"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>
+      <span class="contador" id="contador">0</span>
+    </div>
+    <div class="ico hamburguesa" onclick="panel(true)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#f3e9dc" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </div>
   </div>
 </div>
 
@@ -55,40 +159,56 @@
   <p>Si prefieres reservar mesa para un grupo, haz clic <a href="#reservas">aquí</a>. Para cualquier otra duda, haz clic <a href="#contacto">aquí</a>.</p>
 
   <h2 id="carta">Nuestra carta</h2>
+  <p class="desliza">Desliza →</p>
   <div class="cards">
     <div class="card">
       <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='150'><rect width='250' height='150' fill='%23c8a27a'/><circle cx='125' cy='75' r='38' fill='%233b2a20'/></svg>">
-      <p>Café con leche</p>
-      <p class="precio">2,20 € · IVA incluido · Máximo 2 por persona</p>
-      <span class="btn" onclick="alert('Añadido')">−</span><span class="btn" onclick="alert('Añadido')">+</span><span class="btn" onclick="alert('Añadido')">Añadir</span>
+      <p>Café con leche <span class="fav" onclick="this.style.opacity=.3"><svg viewBox="0 0 24 24" fill="#e8a0a0"><path d="M12 21s-8-5.3-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 5.7-8 11-8 11z"/></svg></span></p>
+      <span class="precio">2,20 € · IVA incluido<span class="info">Contiene leche. Disponible con bebida vegetal.</span></span><br>
+      <span class="btn" onclick="sumar(-1)">−</span><span class="btn" onclick="sumar(1)">+</span><span class="btn" onclick="sumar(1)">Añadir</span>
     </div>
     <div class="card">
       <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='150'><rect width='250' height='150' fill='%23d9b99b'/><rect x='80' y='40' width='90' height='70' fill='%238a5a3c'/></svg>">
-      <p>Tarta de zanahoria</p>
-      <p class="precio">3,80 € · IVA incluido · Hasta agotar existencias</p>
-      <span class="btn" onclick="alert('Añadido')">−</span><span class="btn" onclick="alert('Añadido')">+</span><span class="btn" onclick="alert('Añadido')">Añadir</span>
+      <p>Tarta de zanahoria <span class="fav" onclick="this.style.opacity=.3"><svg viewBox="0 0 24 24" fill="#e8a0a0"><path d="M12 21s-8-5.3-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 5.7-8 11-8 11z"/></svg></span></p>
+      <span class="precio">3,80 € · IVA incluido<span class="info">Contiene gluten, huevo, frutos secos y leche.</span></span><br>
+      <span class="btn" onclick="sumar(-1)">−</span><span class="btn" onclick="sumar(1)">+</span><span class="btn" onclick="sumar(1)">Añadir</span>
     </div>
     <div class="card">
       <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='250' height='150'><rect width='250' height='150' fill='%23b88f6a'/><polygon points='125,30 175,120 75,120' fill='%23f3e9dc'/></svg>">
-      <p>Croissant de mantequilla</p>
-      <p class="precio">1,90 € · IVA incluido · Horneado cada mañana</p>
-      <span class="btn" onclick="alert('Añadido')">−</span><span class="btn" onclick="alert('Añadido')">+</span><span class="btn" onclick="alert('Añadido')">Añadir</span>
+      <p>Croissant de mantequilla <span class="fav" onclick="this.style.opacity=.3"><svg viewBox="0 0 24 24" fill="#e8a0a0"><path d="M12 21s-8-5.3-8-11a5 5 0 0 1 8-4 5 5 0 0 1 8 4c0 5.7-8 11-8 11z"/></svg></span></p>
+      <span class="precio">1,90 € · IVA incluido<span class="info">Contiene gluten, huevo y leche.</span></span><br>
+      <span class="btn" onclick="sumar(-1)">−</span><span class="btn" onclick="sumar(1)">+</span><span class="btn" onclick="sumar(1)">Añadir</span>
     </div>
   </div>
 
   <h2 id="reservas">Reserva tu mesa</h2>
   <div class="form">
-    <input type="text" id="nombre" placeholder="Nombre">
-    <input type="text" id="correo" placeholder="Correo">
-    <input type="text" id="personas" placeholder="Personas">
+    <input type="text" id="nombre" placeholder="Nombre" autocomplete="off">
+    <input type="text" id="correo" placeholder="Correo" autocomplete="off">
+    <input type="text" id="telefono" placeholder="Teléfono" autocomplete="off">
+    <input type="text" id="personas" placeholder="Personas" autocomplete="off">
+    <div class="fila">
+      <select id="dia"><option value="">Día</option><option>Hoy</option><option>Mañana</option><option>Sábado</option><option>Domingo</option></select>
+      <select id="hora"><option value="">Hora</option><option>9:00</option><option>11:00</option><option>13:00</option><option>17:00</option></select>
+      <select id="zona"><option value="">Zona</option><option>Dentro</option><option>Terraza</option></select>
+    </div>
     <button class="enviar" onclick="enviar()">Enviar</button>
+    <p class="ok" id="ok">Reserva enviada</p>
   </div>
 
   <h2 id="contacto">Contacto</h2>
   <p>Calle de la Luna, 12 · Abierto todos los días de 8:00 a 20:00. Haz clic <a href="#inicio">aquí</a> para volver arriba.</p>
 </div>
 
-<div class="pie">© Café Luna · Política de privacidad · Aviso legal · Cookies</div>
+<div class="pie"><span>© Café Luna</span>·<span>Privacidad</span>·<span>Aviso legal</span>·<span>Cookies</span></div>
+
+<div id="cookies">
+  <span>Usamos cookies propias y de terceros para mejorar tu experiencia y mostrarte publicidad personalizada.</span>
+  <span class="aceptar" onclick="document.getElementById('cookies').style.display='none'">Aceptar todo</span>
+  <span class="rechazar" onclick="document.getElementById('cookies').style.display='none'">rechazar</span>
+</div>
+
+<div class="barra-pedir" onclick="ir('carta')">Pedir ahora</div>
 
 <script>
   var frases = [
@@ -107,16 +227,34 @@
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
   }
 
+  function panel(abrir) {
+    document.getElementById('panel').style.display = abrir ? 'block' : 'none';
+  }
+
+  function irMovil(id) {
+    panel(false);
+    ir(id);
+  }
+
+  var total = 0;
+  function sumar(x) {
+    total = Math.max(0, total + x);
+    document.getElementById('contador').textContent = total;
+  }
+
   function enviar() {
-    var ids = ['nombre', 'correo', 'personas'];
+    var ids = ['nombre', 'correo', 'telefono', 'personas', 'dia', 'hora', 'zona'];
+    var todoBien = true;
     ids.forEach(function (id) {
       var campo = document.getElementById(id);
       if (campo.value.trim() === '') {
-        campo.className = 'mal';
+        campo.classList.add('mal');
+        todoBien = false;
       } else {
-        campo.className = '';
+        campo.classList.remove('mal');
       }
     });
+    document.getElementById('ok').style.display = todoBien ? 'block' : 'none';
   }
 </script>
 </body>
